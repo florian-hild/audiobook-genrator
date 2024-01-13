@@ -181,21 +181,13 @@ def main():
 
     copy_and_rename_files( args.input, args.output, args.prefix )
 
-    # mp3_files = [f for f in os.listdir(output_folder_path) if f.lower().endswith(".mp3")]
-    # mp3_files = [os.path.join(output_folder_path, f) for f in mp3_files]
+    mp3_files = [f for f in os.listdir(args.output) if f.lower().endswith(".mp3")]
+    mp3_files = [os.path.join(args.output, f) for f in mp3_files]
 
-    # for index, file in enumerate(mp3_files, start=1):
-    #     clean_id3tags(file)
-    #     set_id3_tags(file,
-    #                 author,
-    #                 album,
-    #                 year,
-    #                 index,
-    #                 len(mp3_files),
-    #                 image_path,
-    #                 series,
-    #                 asin,
-    #                 genre)
+    for index, file in enumerate(mp3_files, start=1):
+        clean_id3_tags(file)
+        set_id3_tags(file, args.author, args.album, args.year, index, len(mp3_files),
+                    args.cover, args.series, args.asin, args.genre)
 
 def copy_and_rename_files(input_folder: str, output_folder: str, title_prefix: str):
     """
