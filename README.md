@@ -1,5 +1,5 @@
 # Audiobook generator
-
+Change layout of audiobook files structure and set ID3 tags.
 
 ## Setup:
 ```bash
