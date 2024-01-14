@@ -313,20 +313,33 @@ def set_id3_tags(file_path: str,
 
     # Change ID3 tags
     log.info("Set %-6s to \"%s\"", "artist", author)
+    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_ARTIST, eyed3.id3.frames.TextFrame("", author))
     audiofile.tag.artist = author
+
     log.info("Set %-6s to \"%s\"", "title", filename)
+    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_TITLE, eyed3.id3.frames.TextFrame("", filename))
     audiofile.tag.title = filename
+
     log.info("Set %-6s to \"%s\"", "album", album)
+    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_ALBUM, eyed3.id3.frames.TextFrame("", album))
     audiofile.tag.album = album
+
     log.info("Set %-6s to \"%s\"", "year", year)
+    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_YEAR, eyed3.id3.frames.TextFrame("", str(year)))
     audiofile.tag.year = year
+
     log.info("Set %-6s to \"%s\"", "series", series)
     audiofile.tag.series = series
+
     log.info("Set %-6s to \"%s\"", "asin", asin)
     audiofile.tag.asin = asin
+
     log.info("Set %-6s to \"%s\"", "genre", genre)
+    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_GENRE, eyed3.id3.frames.TextFrame("", genre))
     audiofile.tag.genre = genre
+
     log.info("Set %-6s to \"%s\"", "track_num", str(track_number) + "/" + str(total_tack_number))
+    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_TRACK_NUM, eyed3.id3.frames.TextFrame("", str(track_number)))
     audiofile.tag.track_num = (track_number, total_tack_number)
 
     if image_path and os.path.isfile(image_path):
