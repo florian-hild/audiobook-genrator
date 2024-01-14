@@ -182,6 +182,7 @@ def main():
     copy_and_rename_files( args.input, args.output, args.prefix )
 
     mp3_files = [f for f in os.listdir(args.output) if f.lower().endswith(".mp3")]
+    mp3_files.sort()
     mp3_files = [os.path.join(args.output, f) for f in mp3_files]
 
     for index, file in enumerate(mp3_files, start=1):
