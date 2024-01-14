@@ -325,7 +325,7 @@ def set_id3_tags(file_path: str,
     audiofile.tag.asin = asin
     log.debug("Set %-6s to \"%s\"", "genre", genre)
     audiofile.tag.genre = genre
-    log.debug("Set %-6s to \"%s\"", "track_num", track_number + "/" + total_tack_number)
+    log.debug("Set %-6s to \"%s\"", "track_num", track_number.to_str() + "/" + total_tack_number.to_str())
     audiofile.tag.track_num = (track_number, total_tack_number)
 
     if image_path and os.path.isfile(image_path):
