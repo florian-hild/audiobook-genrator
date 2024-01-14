@@ -166,7 +166,6 @@ def main():
     parser.add_argument(
         '--cover',
         help='Path to audiobook cover (image/jpeg). Default: cover.jpg',
-        type=check_file,
         default=os.path.join(args.input, "cover.jpg")
     )
 
