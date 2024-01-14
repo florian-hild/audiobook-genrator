@@ -99,7 +99,7 @@ def main():
 
     parser.add_argument(
         '-v', '--verbose',
-        help='Verbose mode. Print debugg messages. Multiple -v options increase the verbosity. The maximum is 3.',
+        help='Verbose mode. Print debug messages. Multiple -v options increase the verbosity. The maximum is 3.',
         action='count',
         default=0,
     )
@@ -220,8 +220,8 @@ def copy_and_rename_files(input_folder: str, output_folder: str, title_prefix: s
         files.sort()
 
         log.info("Copy files to destination and rename files")
-        log.debug("Source path: \"%s\"", input_folder)
-        log.debug("Destination path: \"%s\"", output_folder)
+        log.info("Source path: \"%s\"", input_folder)
+        log.info("Destination path: \"%s\"", output_folder)
         for file in files:
             if file.lower().endswith(".mp3"):
                 # Cut the last underscore from the new filename
@@ -237,7 +237,7 @@ def copy_and_rename_files(input_folder: str, output_folder: str, title_prefix: s
                 new_filename = replace_german_chars(new_filename)
 
 
-                log.debug("Rename \"%s\" to \"%s\"",file ,new_filename)
+                log.info("Rename \"%s\" to \"%s\"",file ,new_filename)
 
                 # Construct the full paths for the source and destination
                 source_path = os.path.join(root, file)
@@ -312,32 +312,32 @@ def set_id3_tags(file_path: str,
     audiofile = eyed3.load(file_path)
 
     # Change ID3 tags
-    log.debug("Set %-6s to \"%s\"", "artist", author)
+    log.info("Set %-6s to \"%s\"", "artist", author)
     audiofile.tag.artist = author
-    log.debug("Set %-6s to \"%s\"", "title", filename)
+    log.info("Set %-6s to \"%s\"", "title", filename)
     audiofile.tag.title = filename
-    log.debug("Set %-6s to \"%s\"", "album", album)
+    log.info("Set %-6s to \"%s\"", "album", album)
     audiofile.tag.album = album
-    log.debug("Set %-6s to \"%s\"", "year", year)
+    log.info("Set %-6s to \"%s\"", "year", year)
     audiofile.tag.year = year
-    log.debug("Set %-6s to \"%s\"", "series", series)
+    log.info("Set %-6s to \"%s\"", "series", series)
     audiofile.tag.series = series
-    log.debug("Set %-6s to \"%s\"", "asin", asin)
+    log.info("Set %-6s to \"%s\"", "asin", asin)
     audiofile.tag.asin = asin
-    log.debug("Set %-6s to \"%s\"", "genre", genre)
+    log.info("Set %-6s to \"%s\"", "genre", genre)
     audiofile.tag.genre = genre
-    log.debug("Set %-6s to \"%s\"", "track_num", str(track_number) + "/" + str(total_tack_number))
+    log.info("Set %-6s to \"%s\"", "track_num", str(track_number) + "/" + str(total_tack_number))
     audiofile.tag.track_num = (track_number, total_tack_number)
 
     if image_path and os.path.isfile(image_path):
-        log.debug("Set %-6s to \"%s\"", "images", image_path)
+        log.info("Set %-6s to \"%s\"", "images", image_path)
         # Set the cover in the ID3 tag
         with open(image_path, 'rb') as image_file:
             cover_bytes = image_file.read()
             audiofile.tag.images.set(3, cover_bytes, 'image/jpeg')
 
         # Copy cover to new folder
-        log.debug("Copy cover image to new destination.")
+        log.info("Copy cover image to new destination.")
         shutil.copy(image_path, os.path.dirname(file_path))
 
     # Save changes
