@@ -186,7 +186,6 @@ def main():
     mp3_files = [os.path.join(args.output, f) for f in mp3_files]
 
     for index, file in enumerate(mp3_files, start=1):
-        clean_id3_tags(file)
         set_id3_tags(file, args.author, args.album, args.year, index, len(mp3_files),
                     args.cover, args.series, args.asin, args.genre)
 
@@ -305,87 +304,57 @@ def set_id3_tags(file_path: str,
     Example:
       set_id3_tags("/tmp/audiobook/file01.mp3", "Auth", "Album", 2021, 1, 10)
     """
-    print('Set ID3Tags')
-    log.info("Set ID3 tags for file \"%s\"", file_path)
+    log.info("")
+    log.info("Processing file: \"%s\"", file_path)
     filename = os.path.splitext(os.path.basename(file_path))[0]
 
     audiofile = eyed3.load(file_path)
 
-    # Change ID3 tags
-    log.info("Set %-6s to \"%s\"", "artist", author)
-    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_ARTIST, eyed3.id3.frames.TextFrame("", author))
+    # Clean all existing ID3 tags
+    log.info("Cleanup current ID3 tags")
+    audiofile.tag.clear()
+
+    # Set ID3 tags
+    log.info("Set ID3 tags")
+
+    log.info("Set %-9s to \"%s\"", "artist", author)
     audiofile.tag.artist = author
 
-    log.info("Set %-6s to \"%s\"", "title", filename)
-    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_TITLE, eyed3.id3.frames.TextFrame("", filename))
+    log.info("Set %-9s to \"%s\"", "title", filename)
     audiofile.tag.title = filename
 
-    log.info("Set %-6s to \"%s\"", "album", album)
-    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_ALBUM, eyed3.id3.frames.TextFrame("", album))
+    log.info("Set %-9s to \"%s\"", "album", album)
     audiofile.tag.album = album
 
-    log.info("Set %-6s to \"%s\"", "year", year)
-    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_YEAR, eyed3.id3.frames.TextFrame("", str(year)))
-    audiofile.tag.year = year
+    log.info("Set %-9s to \"%s\"", "year", year)
+    audiofile.tag.date = year
+    audiofile.tag.recording_date = year
 
-    log.info("Set %-6s to \"%s\"", "series", series)
+    log.info("Set %-9s to \"%s\"", "series", series)
     audiofile.tag.series = series
 
-    log.info("Set %-6s to \"%s\"", "asin", asin)
+    log.info("Set %-9s to \"%s\"", "asin", asin)
     audiofile.tag.asin = asin
 
-    log.info("Set %-6s to \"%s\"", "genre", genre)
-    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_GENRE, eyed3.id3.frames.TextFrame("", genre))
+    log.info("Set %-9s to \"%s\"", "genre", genre)
     audiofile.tag.genre = genre
 
-    log.info("Set %-6s to \"%s\"", "track_num", str(track_number) + "/" + str(total_tack_number))
-    audiofile.tag.frame_set(eyed3.id3.frames.TEXT_V1_TRACK_NUM, eyed3.id3.frames.TextFrame("", str(track_number)))
+    log.info("Set %-9s to \"%s\"", "track_num", str(track_number) + "/" + str(total_tack_number))
     audiofile.tag.track_num = (track_number, total_tack_number)
 
     if image_path and os.path.isfile(image_path):
-        log.info("Set %-6s to \"%s\"", "images", image_path)
+        log.info("Set %-9s to \"%s\"", "images", image_path)
         # Set the cover in the ID3 tag
         with open(image_path, 'rb') as image_file:
             cover_bytes = image_file.read()
             audiofile.tag.images.set(3, cover_bytes, 'image/jpeg')
 
         # Copy cover to new folder
-        log.info("Copy cover image to new destination.")
+        log.info("Copy cover image to new destination")
         shutil.copy(image_path, os.path.dirname(file_path))
 
     # Save changes
     audiofile.tag.save()
-
-def clean_id3_tags(file_path: str):
-    """
-    Clean ID3 tags
-    -------------------
-
-    Arguments:
-      file_path: str
-
-    Returns:
-      None
-
-    Example:
-      clean_id3_tags("/tmp/audiobook/file01.mp3")
-    """
-    log.info("Cleanup current ID3 tags for file: \"%s\"", file_path)
-    audiofile = eyed3.load(file_path)
-
-    # Clean all existing ID3 tags
-    audiofile.tag.artist = None
-    audiofile.tag.title = None
-    audiofile.tag.album = None
-    audiofile.tag.year = None
-    audiofile.tag.series = None
-    audiofile.tag.asin = None
-    audiofile.tag.genre = None
-    audiofile.tag.track_num = None
-
-    # Save changes
-    audiofile.tag.save()
-
 
 if __name__ == '__main__':
     main()
