@@ -307,7 +307,20 @@ def set_id3_tags(file_path: str,
     log.info("Processing file: \"%s\"", file_path)
     filename = os.path.splitext(os.path.basename(file_path))[0]
 
-    audiofile = eyed3.load(file_path)
+    try:
+        audiofile = eyed3.load(file_path)
+
+        if not audiofile:
+            log.error("File type unknown: \"%s\"", file_path)
+            return
+    except IOError as ioe:
+        log.fatal("IOError: %s", ioe)
+        sys.exit(1)
+
+    if not audiofile.tag:
+      log.info("No ID3 tag found")
+      log.info("Create ID3 frame")
+      audiofile.initTag(version=(2, 4, 0))
 
     # Clean all existing ID3 tags
     log.info("Cleanup current ID3 tags")
