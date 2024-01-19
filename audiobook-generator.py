@@ -99,7 +99,8 @@ def main():
 
     parser.add_argument(
         '-v', '--verbose',
-        help='Verbose mode. Print debug messages. Multiple -v options increase the verbosity. The maximum is 3.',
+        help="""Verbose mode. Multiple -v options increase the verbosity.
+             The maximum is 3.""",
         action='count',
         default=0,
     )
@@ -318,9 +319,9 @@ def set_id3_tags(file_path: str,
         sys.exit(1)
 
     if not audiofile.tag:
-      log.info("No ID3 tag found")
-      log.info("Create ID3 frame")
-      audiofile.initTag(version=(2, 4, 0))
+        log.info("No ID3 tag found")
+        log.info("Create ID3 frame")
+        audiofile.initTag(version=(2, 4, 0))
 
     # Clean all existing ID3 tags
     log.info("Cleanup current ID3 tags")
