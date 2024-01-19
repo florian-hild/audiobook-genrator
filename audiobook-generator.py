@@ -181,6 +181,7 @@ def main():
 
     copy_and_rename_files( args.input, args.output, args.prefix )
 
+    print("Set ID3 tags to destination files")
     mp3_files = [f for f in os.listdir(args.output) if f.lower().endswith(".mp3")]
     mp3_files.sort()
     mp3_files = [os.path.join(args.output, f) for f in mp3_files]
@@ -206,7 +207,7 @@ def copy_and_rename_files(input_folder: str, output_folder: str, title_prefix: s
       copy_and_rename_files("/tmp/audiobook", "/tmp/audiobook_changed", "book_test")
     """
 
-    log.info("Get all \"*.mp3\" files in subfolder")
+    print("Get all \"*.mp3\" files in subfolder")
     # Create the output folder if it doesn't exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -218,7 +219,7 @@ def copy_and_rename_files(input_folder: str, output_folder: str, title_prefix: s
     for root, _, files in os.walk(input_folder):
         files.sort()
 
-        log.info("Copy files to destination and rename files")
+        print("Copy files to destination and rename files")
         log.info("Source path: \"%s\"", input_folder)
         log.info("Destination path: \"%s\"", output_folder)
         for file in files:
