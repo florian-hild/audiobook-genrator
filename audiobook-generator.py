@@ -368,7 +368,7 @@ def set_id3_tags(file_path: str,
         shutil.copy(image_path, os.path.dirname(file_path))
 
     # Save changes
-    audiofile.tag.save(version=(1, 0, 0))
+    audiofile.tag.save(version=(1, 1, 0))
     audiofile.tag.save(version=(2, 4, 0))
 
 if __name__ == '__main__':
