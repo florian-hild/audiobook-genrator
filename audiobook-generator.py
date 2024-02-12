@@ -9,14 +9,28 @@ Description   :
 -------------------------------------------------------------------------------
 """
 
-__VERSION__ = '1.0.0'
+__VERSION__ = '2.0.0'
 
 import sys
 import os
 import argparse
-import logging as log
+import logging
+from datetime import datetime
 import shutil
 import eyed3
+
+# Logger configuration
+log = logging.getLogger()
+log_formatter = logging.Formatter("[%(levelname)8s] %(message)s")
+# Set to debug that other handler can filter
+log.setLevel(logging.DEBUG)
+# Add log console stream
+log_console_handler = logging.StreamHandler()
+log_console_handler.setFormatter(log_formatter)
+log.addHandler(log_console_handler)
+
+
+
 
 def check_directory(path: str):
     """
@@ -72,10 +86,6 @@ def main():
     Main function
     -------------------
     """
-
-     # Logger configuration
-    log.basicConfig( format='[%(levelname)8s] %(message)s' )
-
     # Parameter configuration
     parser = argparse.ArgumentParser(
         description='Order audiobook and add ID3 tags.',
@@ -173,11 +183,18 @@ def main():
     args = parser.parse_args()
 
     if args.verbose == 0:
-        log.getLogger().setLevel(log.WARN)
+        log_console_handler.setLevel(logging.WARN)
     elif args.verbose == 1:
-        log.getLogger().setLevel(log.INFO)
+        log_console_handler.setLevel(logging.INFO)
     else:
-        log.getLogger().setLevel(log.DEBUG)
+        log_console_handler.setLevel(logging.DEBUG)
+
+    # Add log file stream
+    logfile = os.path.join(args.output, "audiobook-generator_" + datetime.now().strftime('%F_%H-%M-%S') + ".log")
+    log_file_handler = logging.FileHandler(logfile, 'w')
+    log_file_handler.setFormatter(log_formatter)
+    log_file_handler.setLevel(logging.DEBUG)
+    log.addHandler(log_file_handler)
 
     copy_and_rename_files( args.input, args.output, args.prefix )
 
