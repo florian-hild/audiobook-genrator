@@ -193,7 +193,7 @@ def main():
     logfile = os.path.join(args.output, "audiobook-generator_" + datetime.now().strftime('%F_%H-%M-%S') + ".log")
     log_file_handler = logging.FileHandler(logfile, 'w')
     log_file_handler.setFormatter(log_formatter)
-    log_file_handler.setLevel(logging.DEBUG)
+    log_file_handler.setLevel(logging.INFO)
     log.addHandler(log_file_handler)
 
     copy_and_rename_files( args.input, args.output, args.prefix )
