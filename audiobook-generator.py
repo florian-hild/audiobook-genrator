@@ -233,11 +233,11 @@ def copy_and_rename_files(input_folder: str, output_folder: str, title_prefix: s
     file_counter = 1
 
     # Iterate through subfolders
+    print("Copy files to destination and rename files")
     for root, dirs, files in os.walk(input_folder):
         dirs.sort()
         files.sort()
 
-        print("Copy files to destination and rename files")
         log.info("Source path: \"%s\"", root)
         log.info("Destination path: \"%s\"", output_folder)
         for file in files:
